@@ -6,11 +6,9 @@ export default function Card({ onCardClick, card }) {
     onCardClick(card);
   }
 
-  //console.log(card)
-
   return (
-    <li className="element-list__item" key={card._id} onClick={handleClick}>
-      <img className="element-list__image" alt="" style={{ backgroundImage: `url(${card.link})` }} />
+    <li className="element-list__item" onClick={handleClick}>
+      <img className="element-list__image" alt={card.name} src={card.link} />
       <h2 className="element-list__title">{card.name}</h2>
       <button className="element-list__icon" type="button">
           <div className="element-list__score" />

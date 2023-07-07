@@ -12,14 +12,12 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
-  const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
+  const isOpen = isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || selectedCard
+
 
   const handleCardClick = (card) => {
     setSelectedCard(card)
-    setImagePopupOpen(true)
   }
-
-  //console.log(selectedCard)
 
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(true);
@@ -37,21 +35,24 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setImagePopupOpen(false);
+    setSelectedCard({});
   }
 
   React.useEffect(() => {
     const handleEsc = (event) => {
        if (event.key === 'Escape') {
         closeAllPopups();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
+      }   
+    }
 
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, []);
+    if(isOpen) {
+
+      window.addEventListener('keydown', handleEsc);
+      return () => {
+        window.removeEventListener('keydown', handleEsc);
+      }
+    }    
+  }, [isOpen]);
 
 
   return (
@@ -61,7 +62,6 @@ function App() {
         onAddPlace={handleAddPlacePopupOpen}
         onEditAvatar={handleEditAvatarPopupOpen}
         onCardClick={handleCardClick}
-        //card={card} 
         />
       <Footer />
       <PopupWithForm isOpened={isEditProfilePopupOpen} onClose={closeAllPopups} name="profile-popup" title="Редактировать профиль" label="сохранить" button="Coxpaнить">
@@ -121,27 +121,9 @@ function App() {
       </PopupWithForm>
       <PopupWithForm isOpened={false} onClose={false} name="delete-popup" title="Вы уверены?" label="Да" button="Да">
       </PopupWithForm>
-      <ImagePopup isOpened={isImagePopupOpen} card={selectedCard} onClose={closeAllPopups}/>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
     </div>
   );
 }
 
 export default App;
-
-
-  /*React.useEffect(() => {
-    const handleOverlayEsc = (event) => {
-       if (event.target === event.currentTarget) {
-        setIsEditProfilePopupOpen(false);
-        setIsAddPlacePopupOpen(false);
-        setIsEditAvatarPopupOpen(false);
-        console.log('Close Overlay')
-      }
-    };
-    window.addEventListener('click', handleOverlayEsc);
-
-    return () => {
-      window.removeEventListener('click', handleOverlayEsc);
-    };
-  }, []);  
-  */
