@@ -10,4 +10,4 @@
 
 Стили оформлены согласно файловой структуре [БЭМ Nested](https://ru.bem.info/methodology/).
 
-Вы можете посмотреть что получилось https://tanyasimonova.github.io/
+Вы можете посмотреть что получилось [https://tanyasimonova.github.io/mesto-react/](https://tanyasimonova.github.io/mesto-react/).
