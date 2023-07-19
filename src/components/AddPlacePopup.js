@@ -19,7 +19,12 @@ export function AddPlacePopup({ isOpened, onClose, onAddPlace }) {
   
     onAddPlace({name, link});
   } 
-  
+
+  React.useEffect(() => {
+    setName('');
+    setLink('');
+  }, [isOpened]);
+    
   return (
     <PopupWithForm isOpened={isOpened} onClose={onClose} onSubmit={handleSubmit} name="card-popup" title="Новое место" label="Создать" button="Создать">
     <input
