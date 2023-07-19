@@ -1,37 +1,23 @@
 import React from 'react';
-import api  from '../utils/api.js';
 import Card from './Card.js';
+import {CurrentUserContext} from '../context/CurrentUserContext.js';
 
-const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
+const Main = ({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete, cards }) => {
 
-  const [userName, setUserName] = React.useState('Санчо Панса');
-  const [userDescription, setUserDescription] = React.useState('оруженосец Дон Кихота');
-  const [userAvatar, setUserAvatar] = React.useState('');
-  const [cards, setCards] = React.useState([])
+  const currentUser = React.useContext(CurrentUserContext);
 
    const handleCardClick = (card) => {
     onCardClick(card);
   }
 
-  React.useEffect(() => {
-    api.getUser().then(res => {
-      
-      setUserName(res.name);
-      setUserDescription(res.about);
-      setUserAvatar(res.avatar);
-    })
-    .catch((error => console.log(`Ошибка при загрузке данных пользователя ${error}`)))
-  }, []);
+  const handleCardLike = (card) => {
+    onCardLike(card);
+  }
 
-
-  React.useEffect(() => {
-    api.getItems().then(res => {
-      setCards(res)
-      
-    })
-    .catch((error => console.log(`Ошибка при загрузке данных карточек ${error}`)))
-  }, []);
-
+  const handleCardDelete = (card) => {
+    onCardDelete(card);
+  }
+  
   return (
     <>
       <main className="main">
@@ -41,11 +27,11 @@ const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
           className="profile__button"
           onClick={onEditAvatar} 
           >
-            <img className="profile__avatar" alt="ваша фотография" style={{ backgroundImage: `url(${userAvatar})` }}/>
+            <img className="profile__avatar" alt={currentUser.name} style={{ backgroundImage: `url(${currentUser.avatar})` }}/>
           </button>
           <div className="profile__info">
-            <h1 className="profile__name">{userName}</h1>
-            <p className="profile__speciality">{userDescription}</p>
+            <h1 className="profile__name">{currentUser.name}</h1>
+            <p className="profile__speciality">{currentUser.about}</p>
             <button
               className="edit-button"
               type="button"
@@ -66,9 +52,15 @@ const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
         </section>
         <section className="elements">
           <ul className="element-list">
-            {cards.map(card => (
-              <Card key={card._id} card={card} onCardClick={handleCardClick}/>             
-            ))}
+          {cards.map(card => (
+            <Card 
+            key={card._id} 
+            card={card} 
+            onCardClick={handleCardClick} 
+            onCardLike={handleCardLike} 
+            onCardDelete={handleCardDelete} 
+            />             
+          ))}                       
           </ul>
         </section>
       </main>

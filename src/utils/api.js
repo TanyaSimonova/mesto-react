@@ -30,19 +30,19 @@ class Api {
     .then(this._chekValidity);
   }
 
-  setUser = (data) => {
+  setUser (data) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.speciality
+        about: data.description
       })
     })
     .then(this._chekValidity);
   }
 
-  setUserAvatar = (data) => {
+  setUserAvatar (data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
@@ -69,7 +69,7 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        link: data.link
+        link: data.link,
       })
     })
     .then (this._chekValidity);
